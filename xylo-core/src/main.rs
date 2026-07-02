@@ -65,7 +65,7 @@ async fn main() {
         .with_state(state)
         .layer(cors);
 
-    let port = env::var("PORT").unwrap_or_else(|_| "3000".to_string()).parse::<u16>().unwrap();
+    let port = env::var("PORT").unwrap_or_else(|_| "10000".to_string()).parse::<u16>().unwrap();
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     tracing::info!("Xylo Core listening on {}", addr);
 

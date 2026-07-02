@@ -1,16 +1,17 @@
 services:
   - type: web
     name: xylo-core
-    env: docker
-    repo: https://github.com/your-username/xylo # Replace with actual repo
-    plan: pro
+    env: rust
+    repo: https://github.com/foxyvio/Xylo
+    plan: free
     region: ohio
-    dockerfilePath: xylo-core/Dockerfile
+    buildCommand: "cd xylo-core && cargo build --release"
+    startCommand: "cd xylo-core && ./target/release/xylo-core"
     envVars:
       - key: PORT
-        value: 3000
+        value: 10000
       - key: RUST_LOG
-        value: xylo_core=debug,tower_http=debug
+        value: xylo_core=info
       - key: PASETO_SECRET
         generateValue: true
       - key: DATABASE_URL
