@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: xylo-core
+    env: docker
+    repo: https://github.com/your-username/xylo # Replace with actual repo
+    plan: pro
+    region: ohio
+    dockerfilePath: xylo-core/Dockerfile
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: RUST_LOG
+        value: xylo_core=debug,tower_http=debug
+      - key: PASETO_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromService:
+          name: xylo-db
+          type: database
+          property: connectionString
+
+  - type: static
+    name: xylo-web
+    env: static
+    repo: https://github.com/your-username/xylo # Replace with actual repo
+    plan: free
+    region: ohio
+    buildCommand: "cd xylo-web && flutter build web --wasm"
+    publishPath: xylo-web/build/web
+    envVars:
+      - key: API_BASE_URL
+        fromService:
+          name: xylo-core
+          type: web
+          property: url
+
+databases:
+  - name: xylo-db
+    plan: free
+    region: ohio
